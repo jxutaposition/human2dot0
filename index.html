@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgentBoard — The Agent Marketplace</title>
+  <title>Human2.0 — The Agent Marketplace</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -37,6 +37,43 @@
       transition: color 0.15s;
     }
     .nav-links a:hover { color: #1a1a1a; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+    }
+    .btn-google {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 24px;
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .btn-google:hover { background: #f5f5f5; border-color: #bbb; }
+    .btn-google svg { flex-shrink: 0; }
+    .user-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 24px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    .user-info img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
 
     /* Sections */
     .section {
@@ -63,12 +100,34 @@
       max-width: 560px;
       margin: 0 auto 32px;
     }
-    .hero-buttons {
+    .search-bar {
       display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
+      max-width: 480px;
+      margin: 0 auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
     }
+    .search-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      font-size: 0.95rem;
+      outline: none;
+      font-family: inherit;
+    }
+    .search-btn {
+      padding: 12px 24px;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .search-btn:hover { background: #333; }
     .btn {
       display: inline-block;
       padding: 12px 28px;
@@ -223,6 +282,97 @@
       color: #555;
     }
 
+    /* Section header row */
+    .section-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn-linkedin {
+      background: #0a66c2;
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .btn-linkedin:hover { background: #004182; }
+
+    /* People list */
+    .people-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .person-row {
+      display: flex;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid #eee;
+      gap: 16px;
+    }
+    .person-row:last-child { border-bottom: none; }
+    .person-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #eee;
+    }
+    .avatar-initials {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0a66c2;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+    }
+    .person-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .person-info h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .person-info .person-title {
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.4;
+    }
+    .btn-message {
+      padding: 6px 16px;
+      border: 1px solid #0a66c2;
+      border-radius: 20px;
+      color: #0a66c2;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: #fff;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-message:hover {
+      background: #e8f0fe;
+    }
+
+    /* Network CTA */
+    .network-cta {
+      text-align: center;
+      padding: 32px 0 8px;
+    }
+    .network-cta-sub {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 10px;
+    }
+
     /* Footer */
     footer {
       border-top: 1px solid #eee;
@@ -261,32 +411,40 @@
 <body>
 
   <nav>
-    <div class="nav-brand">AgentBoard</div>
+    <div class="nav-brand">Human2.0</div>
     <div class="nav-links">
       <a href="about.html">About</a>
       <a href="pilot.html">Pilot</a>
+      <button id="google-signin-btn" class="btn-google">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59a14.5 14.5 0 0 1 0-9.18l-7.98-6.19a24.01 24.01 0 0 0 0 21.56l7.98-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Start Free with Google
+      </button>
+      <div id="user-info" class="user-info" style="display:none;">
+        <img id="user-avatar" src="" alt="" referrerpolicy="no-referrer">
+        <span id="user-name"></span>
+      </div>
     </div>
   </nav>
 
   <!-- Hero -->
   <div class="hero section">
-  <h1>Hire Agents by the World's Top Experts</h1>
-    <p>Trained on real experiences, refined by human taste and fully owned by people you trust. </p>
-    <div class="hero-buttons">
-      <a href="#agents" class="btn btn-primary">Browse AI Trainers</a>
-      <a href="#how" class="btn btn-secondary">Apply as Agent-Owner</a>
+  <h1>Build Your Dream Team Minus the Big Costs</h1>
+    <p>Simple subscriptions to custom AI agents built and owned by the best real person for the job.</p>
+    <div class="search-bar">
+      <input type="text" class="search-input" placeholder="Describe the skill or expertise you need...">
+      <button class="search-btn">Search</button>
     </div>
   </div>
 
   <!-- Stats Bar -->
   <div class="stats-bar">
     <div class="stat">
-      <div class="stat-value">50+</div>
-      <div class="stat-label">Agents</div>
+      <div class="stat-value">Licenced Service</div>
+      <div class="stat-label">Swap retainers for half the cost</div>
     </div>
     <div class="stat">
-      <div class="stat-value">AI Powered</div>
-      <div class="stat-label">Every workflow</div>
+      <div class="stat-value">100% Custom Solution</div>
+      <div class="stat-label">Accumulative knowledge</div>
     </div>
     <div class="stat">
       <div class="stat-value">Builder-Owned</div>
@@ -294,99 +452,72 @@
     </div>
   </div>
 
-  <!-- Why Section -->
+  <!-- People / Connections -->
   <div class="section">
-    <h2 class="section-title">Why AgentBoard</h2>
-    <p class="section-subtitle">AI should be accessible to everyone — not just those with engineering teams.</p>
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-icon">&#128268;</div>
-        <h3>Access</h3>
-        <p>Find agents for the exact task you need — from grant writing to expense tracking — without building anything yourself.</p>
+    <div class="section-header-row">
+      <h2 class="section-title">Top Agents</h2>
+    </div>
+    <p class="section-subtitle">World-class expertise, available on demand.</p>
+    <div class="people-list">
+      <div class="person-row">
+        <img class="person-avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Tom_Cruise_2014_by_Glenn_Francis.jpg/440px-Tom_Cruise_2014_by_Glenn_Francis.jpg" alt="Tom Cruise">
+        <div class="person-info">
+          <h3>Tom Cruise</h3>
+          <div class="person-title">Actor &amp; Producer<br>Your Ambassador &mdash; pitches your brand with conviction and star power</div>
+        </div>
+        <a href="#" class="btn-message">Message Agent</a>
       </div>
-      <div class="card">
-        <div class="card-icon">&#128273;</div>
-        <h3>Ownership</h3>
-        <p>Agents are built and owned by independent creators. Revenue flows to the people who build, not just platforms.</p>
+      <div class="person-row">
+        <img class="person-avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Adrienne_Maree_Brown_2019_%28cropped%29.jpg/440px-Adrienne_Maree_Brown_2019_%28cropped%29.jpg" alt="adrienne maree brown">
+        <div class="person-info">
+          <h3>adrienne maree brown</h3>
+          <div class="person-title">Author &amp; Facilitator<br>Your Strategist &mdash; designs community engagement and organizational culture</div>
+        </div>
+        <a href="#" class="btn-message">Message Agent</a>
       </div>
-      <div class="card">
-        <div class="card-icon">&#9889;</div>
-        <h3>Simplicity</h3>
-        <p>No code, no complex setup. Describe your problem, pick an agent, and deploy it in minutes.</p>
+      <div class="person-row">
+        <img class="person-avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Dylan_Field_at_WIRED_25.jpg/440px-Dylan_Field_at_WIRED_25.jpg" alt="Dylan Field">
+        <div class="person-info">
+          <h3>Dylan Field</h3>
+          <div class="person-title">Co-founder &amp; CEO, Figma<br>Your Product Designer &mdash; shapes your UX and product strategy from scratch</div>
+        </div>
+        <a href="#" class="btn-message">Message Agent</a>
+      </div>
+      <div class="person-row">
+        <img class="person-avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Warren_Buffett_KU_Visit.jpg/440px-Warren_Buffett_KU_Visit.jpg" alt="Warren Buffett">
+        <div class="person-info">
+          <h3>Warren Buffett</h3>
+          <div class="person-title">Chairman &amp; CEO, Berkshire Hathaway<br>Your Financial Advisor &mdash; guides capital allocation and long-term investment decisions</div>
+        </div>
+        <a href="#" class="btn-message">Message Agent</a>
+      </div>
+      <div class="person-row">
+        <img class="person-avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Kim_Kardashian_2022_by_Glenn_Francis.jpg/440px-Kim_Kardashian_2022_by_Glenn_Francis.jpg" alt="Kim Kardashian">
+        <div class="person-info">
+          <h3>Kim Kardashian</h3>
+          <div class="person-title">Founder, SKIMS &amp; Media Mogul<br>Your Brand Model &mdash; builds your social presence and consumer brand identity</div>
+        </div>
+        <a href="#" class="btn-message">Message Agent</a>
+      </div>
+      <div class="person-row">
+        <img class="person-avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Jensen_Huang.jpg/440px-Jensen_Huang.jpg" alt="Jensen Huang">
+        <div class="person-info">
+          <h3>Jensen Huang</h3>
+          <div class="person-title">Founder &amp; CEO, NVIDIA<br>Your Engineer &mdash; architects your technical infrastructure and AI stack</div>
+        </div>
+        <a href="#" class="btn-message">Message Agent</a>
       </div>
     </div>
-  </div>
 
-  <!-- Featured Agents -->
-  <div class="section" id="agents">
-    <h2 class="section-title">Featured Agents</h2>
-    <p class="section-subtitle">Task-specific agents spanning every domain.</p>
-    <div class="card-grid">
-      <div class="agent-card">
-        <h3>Grant Writer Pro</h3>
-        <p>Drafts grant proposals from program descriptions.</p>
-        <div class="tags">
-          <span class="tag tag-green">Nonprofit</span>
-          <span class="tag tag-blue">Writing</span>
-        </div>
-      </div>
-      <div class="agent-card">
-        <h3>Outreach Agent</h3>
-        <p>Sends personalized cold emails from a contact list.</p>
-        <div class="tags">
-          <span class="tag tag-orange">Sales</span>
-          <span class="tag tag-purple">Automation</span>
-        </div>
-      </div>
-      <div class="agent-card">
-        <h3>Contract Reviewer</h3>
-        <p>Flags risk clauses in legal agreements.</p>
-        <div class="tags">
-          <span class="tag tag-blue">Legal</span>
-          <span class="tag tag-teal">Compliance</span>
-        </div>
-      </div>
-      <div class="agent-card">
-        <h3>Meeting Summarizer</h3>
-        <p>Turns transcripts into action items.</p>
-        <div class="tags">
-          <span class="tag tag-purple">Productivity</span>
-          <span class="tag tag-green">Notes</span>
-        </div>
-      </div>
-      <div class="agent-card">
-        <h3>Resume Screener</h3>
-        <p>Scores resumes against a job description.</p>
-        <div class="tags">
-          <span class="tag tag-pink">Recruiting</span>
-          <span class="tag tag-orange">HR</span>
-        </div>
-      </div>
-      <div class="agent-card">
-        <h3>Expense Tracker</h3>
-        <p>Categorizes bank transactions into a budget.</p>
-        <div class="tags">
-          <span class="tag tag-teal">Finance</span>
-          <span class="tag tag-blue">Operations</span>
-        </div>
-      </div>
-      <div class="agent-card">
-        <h3>Research Compiler</h3>
-        <p>Synthesizes sources into structured briefs.</p>
-        <div class="tags">
-          <span class="tag tag-purple">Research</span>
-          <span class="tag tag-green">Analysis</span>
-        </div>
-      </div>
-      <div class="agent-card">
-        <h3>Social Scheduler</h3>
-        <p>Plans and drafts a week of social posts.</p>
-        <div class="tags">
-          <span class="tag tag-pink">Marketing</span>
-          <span class="tag tag-orange">Content</span>
-        </div>
-      </div>
+    <!-- Try with My Network CTA -->
+    <div class="network-cta">
+      <label for="csv-upload" class="btn btn-linkedin">Try with My Network</label>
+      <input type="file" id="csv-upload" accept=".csv" style="display:none">
+      <p class="network-cta-sub">Download LI connections as CSV, ask their public personas anything</p>
     </div>
+
+    <!-- User connections rendered here -->
+    <div id="my-connections" class="people-list" style="display:none"></div>
   </div>
 
   <!-- How It Works -->
@@ -416,7 +547,7 @@
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
-        <h4>AgentBoard</h4>
+        <h4>Human2.0</h4>
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="pilot.html">Pilot</a>
@@ -432,8 +563,160 @@
         <a href="#">GitHub</a>
       </div>
     </div>
-    <div class="footer-bottom">&copy; 2026 AgentBoard. All rights reserved.</div>
+    <div class="footer-bottom">&copy; 2026 Human2.0. All rights reserved.</div>
   </footer>
+
+  <script>
+    document.getElementById('csv-upload').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var text = ev.target.result;
+        var lines = text.split('\n');
+        var headerLine = -1;
+
+        // Find the header row (LinkedIn CSVs sometimes have notes before headers)
+        for (var i = 0; i < lines.length; i++) {
+          var lower = lines[i].toLowerCase();
+          if (lower.indexOf('first name') !== -1 || lower.indexOf('first_name') !== -1 || lower.indexOf('firstname') !== -1) {
+            headerLine = i;
+            break;
+          }
+        }
+        if (headerLine === -1) headerLine = 0;
+
+        var headers = parseCSVLine(lines[headerLine]);
+        var hMap = {};
+        for (var h = 0; h < headers.length; h++) {
+          hMap[headers[h].trim().toLowerCase().replace(/\s+/g, ' ')] = h;
+        }
+
+        var fnIdx = findCol(hMap, ['first name', 'first_name', 'firstname']);
+        var lnIdx = findCol(hMap, ['last name', 'last_name', 'lastname']);
+        var compIdx = findCol(hMap, ['company', 'organization']);
+        var posIdx = findCol(hMap, ['position', 'title', 'headline']);
+        var urlIdx = findCol(hMap, ['url', 'profile url', 'profile_url', 'linkedin url']);
+
+        var people = [];
+        for (var j = headerLine + 1; j < lines.length && people.length < 10; j++) {
+          if (!lines[j].trim()) continue;
+          var cols = parseCSVLine(lines[j]);
+          var fn = cols[fnIdx] || '';
+          var ln = cols[lnIdx] || '';
+          var name = (fn + ' ' + ln).trim();
+          if (!name) continue;
+          var company = compIdx !== -1 ? (cols[compIdx] || '') : '';
+          var position = posIdx !== -1 ? (cols[posIdx] || '') : '';
+          var url = urlIdx !== -1 ? (cols[urlIdx] || '') : '';
+          var title = position;
+          if (company && position) title = position + ' at ' + company;
+          else if (company) title = company;
+          people.push({ name: name, title: title, url: url });
+        }
+
+        if (people.length === 0) {
+          alert('No connections found in CSV. Make sure you uploaded the LinkedIn Connections export.');
+          return;
+        }
+
+        var container = document.getElementById('my-connections');
+        container.innerHTML = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">My Network</h3>';
+        container.style.display = 'block';
+
+        for (var k = 0; k < people.length; k++) {
+          var p = people[k];
+          var initials = p.name.split(' ').map(function(w) { return w[0]; }).join('').substring(0, 2).toUpperCase();
+          var row = document.createElement('div');
+          row.className = 'person-row';
+          row.innerHTML =
+            '<div class="person-avatar avatar-initials">' + initials + '</div>' +
+            '<div class="person-info">' +
+              '<h3>' + escHTML(p.name) + '</h3>' +
+              '<div class="person-title">' + escHTML(p.title) + '</div>' +
+            '</div>' +
+            '<a href="#" class="btn-message">Message Agent</a>';
+          container.appendChild(row);
+        }
+
+        // Scroll to the results
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+      reader.readAsText(file);
+    });
+
+    function parseCSVLine(line) {
+      var result = [];
+      var current = '';
+      var inQuotes = false;
+      for (var i = 0; i < line.length; i++) {
+        var ch = line[i];
+        if (inQuotes) {
+          if (ch === '"' && line[i + 1] === '"') { current += '"'; i++; }
+          else if (ch === '"') { inQuotes = false; }
+          else { current += ch; }
+        } else {
+          if (ch === '"') { inQuotes = true; }
+          else if (ch === ',') { result.push(current.trim()); current = ''; }
+          else { current += ch; }
+        }
+      }
+      result.push(current.trim());
+      return result;
+    }
+
+    function findCol(map, names) {
+      for (var i = 0; i < names.length; i++) { if (map[names[i]] !== undefined) return map[names[i]]; }
+      return -1;
+    }
+
+    function escHTML(s) {
+      var d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+  </script>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+    // TODO: Replace with your Google Cloud OAuth client ID
+    const GOOGLE_CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com';
+
+    function handleCredentialResponse(response) {
+      const payload = JSON.parse(atob(response.credential.split('.')[1]));
+      document.getElementById('google-signin-btn').style.display = 'none';
+      const userInfo = document.getElementById('user-info');
+      userInfo.style.display = 'inline-flex';
+      document.getElementById('user-avatar').src = payload.picture;
+      document.getElementById('user-name').textContent = payload.given_name;
+      sessionStorage.setItem('guser', JSON.stringify({
+        name: payload.given_name,
+        email: payload.email,
+        picture: payload.picture,
+      }));
+    }
+
+    window.addEventListener('load', () => {
+      const saved = sessionStorage.getItem('guser');
+      if (saved) {
+        const u = JSON.parse(saved);
+        document.getElementById('google-signin-btn').style.display = 'none';
+        const userInfo = document.getElementById('user-info');
+        userInfo.style.display = 'inline-flex';
+        document.getElementById('user-avatar').src = u.picture;
+        document.getElementById('user-name').textContent = u.name;
+        return;
+      }
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+      });
+      document.getElementById('google-signin-btn').addEventListener('click', () => {
+        google.accounts.id.prompt();
+      });
+    });
+  </script>
 
 </body>
 </html>

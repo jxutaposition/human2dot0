@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pilot — Human2.0</title>
+  <title>Pilot — AgentBoard</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -349,7 +349,7 @@
 <body>
 
   <nav>
-    <a href="index.html" class="nav-brand">Human2.0</a>
+    <a href="index.html" class="nav-brand">AgentBoard</a>
     <div class="nav-links">
       <a href="about.html">About</a>
       <a href="pilot.html">Pilot</a>
@@ -366,8 +366,8 @@
 
   <!-- Hero -->
   <div class="hero section">
-    <h1>Future-proof your skills</h1>
-    <p>We're looking for early partners to test, shape, and launch the first wave of agents on Human2.0.</p>
+    <h1>Join the Pilot</h1>
+    <p>We're looking for early partners to test, shape, and launch the first wave of agents on AgentBoard.</p>
   </div>
 
   <hr class="divider">
@@ -375,13 +375,7 @@
   <!-- What is the Pilot -->
   <div class="section">
     <h2 class="section-title">What is the Pilot?</h2>
-    As long as you have a high bar for excellence. 
-    Nerd profile: either you love building tools and are already tapped into agent design conversations, 
-    or you are a true nerd about your area of passion and want to share that with the world. 
-    Problems we are looking to answer: how to solve the translation layer. We produce so much trace in our browsers, 
-    meetings, even journals scribbles. training and refining models require representative data. 
-    context requires human input. how do we effectively let ai observe us? 
-    <p>The Human2.0 Pilot is a small, hands-on program for organizations and independent builders who want early access to the marketplace. Pilot partners get to deploy agents before public launch, give direct feedback on the platform, and help define how the marketplace works.</p>
+    <p>The AgentBoard Pilot is a small, hands-on program for organizations and independent builders who want early access to the marketplace. Pilot partners get to deploy agents before public launch, give direct feedback on the platform, and help define how the marketplace works.</p>
     <p>We're specifically looking for two kinds of partners: <strong>organizations</strong> that have repetitive knowledge work they want to automate, and <strong>domain experts</strong> who want to build and list agents based on their professional expertise.</p>
   </div>
 
@@ -419,9 +413,6 @@
   <!-- How It Works -->
   <div class="section">
     <h2 class="section-title">How the Pilot Works</h2>
-    you get a package with instructions. upload only the public facing part - custom
-    client dashboard, landing page etc, 
-    all of your knowledge never leaves your computer. 
     <div class="steps">
       <div class="step">
         <div class="step-number">1</div>
@@ -431,7 +422,7 @@
       <div class="step">
         <div class="step-number">2</div>
         <h3>Onboard</h3>
-        <p>We'll match you with agents or help you build one, with direct support from the Human2.0 team.</p>
+        <p>We'll match you with agents or help you build one, with direct support from the AgentBoard team.</p>
       </div>
       <div class="step">
         <div class="step-number">3</div>
@@ -452,18 +443,6 @@
         <div class="timeline-content">
           <h3>Applications Open</h3>
           <p>Submit your interest and tell us about your use case.</p>
-          Form questions: 
-          - Preferred communication with clients
-    - Meeting frequency, structure
-    - Main channel, what type of question
-    - Daily summary, what’s in there
-    - Escalation flow
-- how do you feel about sharing best practices
-    - i dont mind having my templates be automatically based on the best practice
-    - i want ultimate control of my comms style
-    - i want both
-- solving distribution may mean central logic and routing. are you ok with that? what are you concerns?
-
         </div>
       </div>
       <div class="timeline-item">
@@ -503,7 +482,7 @@
   <div class="section">
     <h2 class="section-title">What Pilot Partners Get</h2>
     <div class="highlight-box">
-      <p><strong>Early access</strong> to the Human2.0 platform before public launch.</p>
+      <p><strong>Early access</strong> to the AgentBoard platform before public launch.</p>
       <p><strong>Direct support</strong> from the team to build or deploy agents.</p>
       <p><strong>Priority listing</strong> for builders when the marketplace goes live.</p>
       <p><strong>Input on product direction</strong> — your feedback directly shapes the platform.</p>
@@ -553,7 +532,7 @@
   <footer>
     <div class="footer-grid">
       <div class="footer-col">
-        <h4>Human2.0</h4>
+        <h4>AgentBoard</h4>
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
         <a href="pilot.html">Pilot</a>
@@ -569,12 +548,11 @@
         <a href="#">GitHub</a>
       </div>
     </div>
-    <div class="footer-bottom">&copy; 2026 Human2.0. All rights reserved.</div>
+    <div class="footer-bottom">&copy; 2026 AgentBoard. All rights reserved.</div>
   </footer>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script>
-    // TODO: Replace with your Google Cloud OAuth client ID
     const GOOGLE_CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com';
 
     function handleCredentialResponse(response) {
@@ -613,10 +591,6 @@
   </script>
 
   <script>
-    // TODO: Replace with your serverless proxy URL (e.g. Netlify/Vercel function)
-    // The proxy should forward the JSON body to Notion's API:
-    //   POST https://api.notion.com/v1/pages
-    //   with your Notion API key and database ID
     const PROXY_URL = '/api/pilot-form';
 
     document.getElementById('pilot-form').addEventListener('submit', async (e) => {
