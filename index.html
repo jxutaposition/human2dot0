@@ -372,6 +372,46 @@
       color: #777;
       margin-top: 10px;
     }
+    .btn-linkedin-oauth {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 28px;
+      background: #0a66c2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-linkedin-oauth:hover { background: #004182; transform: translateY(-1px); }
+    .btn-upload-csv {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-upload-csv:hover { background: #15803d; transform: translateY(-1px); }
+    .download-step {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: #0a66c2;
+      font-weight: 600;
+    }
+    .download-step:hover { text-decoration: underline; }
 
     /* Footer */
     footer {
@@ -511,9 +551,26 @@
 
     <!-- Try with My Network CTA -->
     <div class="network-cta">
-      <label for="csv-upload" class="btn btn-linkedin">Try with My Network</label>
-      <input type="file" id="csv-upload" accept=".csv" style="display:none">
-      <p class="network-cta-sub">Download LI connections as CSV, ask their public personas anything</p>
+      <!-- Step 1: LinkedIn OAuth -->
+      <div id="linkedin-step">
+        <button class="btn-linkedin-oauth" onclick="startLinkedInOAuth()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Try with My Network
+        </button>
+        <p class="network-cta-sub">Connect LinkedIn to import your connections</p>
+      </div>
+
+      <!-- Step 2: Download + Upload (shown after OAuth) -->
+      <div id="upload-step" style="display:none">
+        <a href="https://www.linkedin.com/mypreferences/d/download-my-data" target="_blank" class="download-step">Step 1: Download your connections CSV from LinkedIn &rarr;</a>
+        <br><br>
+        <label for="csv-upload" class="btn-upload-csv">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload Connections
+        </label>
+        <input type="file" id="csv-upload" accept=".csv" style="display:none">
+        <p class="network-cta-sub">Upload the CSV to see your connections as agents</p>
+      </div>
     </div>
 
     <!-- User connections rendered here -->
@@ -567,6 +624,41 @@
   </footer>
 
   <script>
+    // --- LinkedIn OAuth Config ---
+    // TODO: Register a LinkedIn App at https://developer.linkedin.com and paste your Client ID here
+    var LINKEDIN_CLIENT_ID = 'YOUR_LINKEDIN_CLIENT_ID';
+    var REDIRECT_URI = window.location.origin + window.location.pathname;
+
+    function startLinkedInOAuth() {
+      var state = Math.random().toString(36).substring(2);
+      sessionStorage.setItem('li_oauth_state', state);
+      var authUrl = 'https://www.linkedin.com/oauth/v2/authorization'
+        + '?response_type=code'
+        + '&client_id=' + LINKEDIN_CLIENT_ID
+        + '&redirect_uri=' + encodeURIComponent(REDIRECT_URI)
+        + '&state=' + state
+        + '&scope=openid%20profile%20email';
+      window.location.href = authUrl;
+    }
+
+    // On page load: check if we're returning from LinkedIn OAuth
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      if (params.has('code') || sessionStorage.getItem('li_connected')) {
+        sessionStorage.setItem('li_connected', '1');
+        // Clean the URL
+        if (params.has('code')) {
+          window.history.replaceState({}, '', window.location.pathname);
+        }
+        showUploadStep();
+      }
+    })();
+
+    function showUploadStep() {
+      document.getElementById('linkedin-step').style.display = 'none';
+      document.getElementById('upload-step').style.display = 'block';
+    }
+
     document.getElementById('csv-upload').addEventListener('change', function(e) {
       var file = e.target.files[0];
       if (!file) return;
